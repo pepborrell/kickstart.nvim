@@ -911,13 +911,13 @@ require('lazy').setup({
     -- If you want to see what colorschemes are already installed, you can use `:Telescope colorscheme`.
     'Shatur/neovim-ayu',
     priority = 1000, -- Make sure to load this before all the other start plugins.
-    config = function()
-      ---@diagnostic disable-next-line: missing-fields
-      require('tokyonight').setup {
-        styles = {
-          comments = { italic = false }, -- Disable italics in comments
-        },
-      }
+    -- config = function()
+    --   ---@diagnostic disable-next-line: missing-fields
+    --   require('tokyonight').setup {
+    --     styles = {
+    --       comments = { italic = false }, -- Disable italics in comments
+    --     },
+    --   },
 
     init = function()
       require('ayu').setup {
@@ -1014,7 +1014,7 @@ require('lazy').setup({
   require 'kickstart.plugins.lint',
   require 'kickstart.plugins.autopairs',
   require 'kickstart.plugins.neo-tree',
-  -- require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
+  require 'kickstart.plugins.gitsigns', -- adds gitsigns recommend keymaps
 
   -- NOTE: The import below can automatically add your own plugins, configuration, etc from `lua/custom/plugins/*.lua`
   --    This is the easiest way to modularize your config.
@@ -1096,6 +1096,17 @@ require('lspconfig').pyright.setup {
       },
     },
   },
+  -- Set the python path to the virtual environment in the project.
+  on_init = function(client)
+    local root_dir = client.config.root_dir or vim.fn.getcwd()
+    local python_path = root_dir .. '/.venv/bin/python'
+
+    -- Check if the Python binary exists
+    if vim.fn.filereadable(python_path) == 1 then
+      client.config.settings.python.pythonPath = python_path
+      client.notify('workspace/didChangeConfiguration', { settings = client.config.settings })
+    end
+  end,
 }
 
 -- The line beneath this is called `modeline`. See `:help modeline`
