@@ -673,7 +673,7 @@ require('lazy').setup({
         -- gopls = {},
         pyright = {},
         ruff = { settings = {} },
-        -- rust_analyzer = {},
+        rust_analyzer = {},
         -- ... etc. See `:help lspconfig-all` for a list of all the pre-configured LSPs
         --
         -- Some languages (like typescript) have entire language plugins that can be useful:
@@ -772,6 +772,7 @@ require('lazy').setup({
         python = { 'ruff_fix', 'ruff_format' },
         --
         -- You can use 'stop_after_first' to run the first available formatter from the list
+        rust = { 'rustfmt', lsp_format = 'fallback' },
         javascript = { 'prettierd', 'prettier', stop_after_first = true },
       },
     },
